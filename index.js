@@ -1,17 +1,56 @@
-const second = 1000,
-      minute = second * 60,
-      hour = minute * 60,
-      day = hour * 24;
+var countDownDate = new Date("Aug 05, 2023 16:00:00").getTime();
+var x = setInterval(function () {
 
-let countDown = new Date('aug 05, 2023 16:38:00').getTime(),
-    x = setInterval(function() {
+  var now = new Date().getTime();
 
-      let now = new Date().getTime(),
-          distance = countDown - now;
 
-      document.getElementById('dias').innerText = Math.floor(distance / (day)),
-        document.getElementById('horas').innerText = Math.floor((distance % (day)) / (hour)),
-        document.getElementById('minutos').innerText = Math.floor((distance % (hour)) / (minute)),
-        document.getElementById('segundos').innerText = Math.floor((distance % (minute)) / second);
+  var distance = countDownDate - now;
 
-    }, second)
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+  document.getElementById("days").innerHTML = days;
+  document.getElementById("hours").innerHTML = hours;
+  document.getElementById("minutes").innerHTML = minutes;
+  document.getElementById("seconds").innerHTML = seconds;
+
+
+  effectCircle(days, hours, minutes, seconds);
+
+}, 1000);
+
+effectCircle = function (d, h, m, s) {
+
+  const max_sec = 60;
+  const max_min = 60;
+  const max_hour = 24;
+  const max_day = 30;
+
+  const strokeDashoffset = 285;
+
+  var circleSVG = document.getElementsByClassName('outer');
+
+  // circulo dias
+  var valPerDay = strokeDashoffset / max_day;
+  var size = strokeDashoffset - (valPerDay * d);
+  circleSVG[0].style.strokeDashoffset = size;
+
+  // circulo horas
+  var valPerHour = strokeDashoffset / max_hour;
+  var size = strokeDashoffset - (valPerHour * h);
+  circleSVG[1].style.strokeDashoffset = size;
+
+  // circulo minutos
+  var valPerMin = strokeDashoffset / max_min;
+  var size = strokeDashoffset - (valPerMin * m);
+  circleSVG[2].style.strokeDashoffset = size;
+
+  // circulo segundos
+  var valPerSecond = strokeDashoffset / max_sec;
+  var size = strokeDashoffset - (valPerSecond * s);
+  circleSVG[3].style.strokeDashoffset = size;
+
+}
